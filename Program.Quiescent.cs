@@ -1,27 +1,39 @@
 using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
 public partial class Program
 {
 	public static void QuiescentExample()
 	{
+		var exampleSources = Observable.Create(async (IObserver<int> observer) =>
+		{
+			observer.OnNext(1);
+			await Task.Delay(100);
+			observer.OnNext(2);
+			await Task.Delay(2000);
+			observer.OnNext(3);
+			observer.OnNext(4);
+			await Task.Delay(100);
+			observer.OnNext(5);
+			await Task.Delay(2000);
+			observer.OnNext(6);
+			return Disposable.Empty;
+		});
 
-		var source = Observable.Empty<int>()
-			.Concat(Observable.Return(1).Delay(TimeSpan.FromSeconds(0)))
-			.Concat(Observable.Return(2).Delay(TimeSpan.FromSeconds(0.1)))
-			.Concat(Observable.Return(3).Delay(TimeSpan.FromSeconds(2)))
-			.Concat(Observable.Return(4).Delay(TimeSpan.FromSeconds(0.1)))
-			.Concat(Observable.Return(5).Delay(TimeSpan.FromSeconds(0.3)))
-			.Concat(Observable.Return(6).Delay(TimeSpan.FromSeconds(1.9)));
 
-
-		source.Quiescent(TimeSpan.FromSeconds(1.5), Scheduler.Default)
+		var subscription = exampleSources.Quiescent(TimeSpan.FromSeconds(1.5), Scheduler.Default)
 			.Subscribe(
 				value => { WriteLine($"({DateTime.Now}) [ {string.Join(", ", value)} ]"); },
 				error => { WriteLine($"Sequence faulted with {error}"); },
 				() => { WriteLine("Sequence terminated"); }
 			);
 
+		WriteLine("Subscribed");
+		ReadLine();
+
+		subscription.Dispose();
+		WriteLine("Unsubscribed");
 
 		ReadLine();
 	}
