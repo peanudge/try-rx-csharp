@@ -7,5 +7,12 @@
 
 // StartAction();
 // ObservableFromTask();
-ObservableFromTaskPerSubscription();
+// ObservableFromTaskPerSubscription();
+
+// ForwardSubject();
+// ReplaySubject();
+// BehaviorSubject();
+
+// AsyncSubjectExample(); 
+
 ReadLine();
