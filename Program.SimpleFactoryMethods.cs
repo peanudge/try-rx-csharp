@@ -122,21 +122,14 @@ public partial class Program
 	}
 
 	public static IObservable<T> Never<T>()
-	{
-		return Observable.Create<T>(o =>
-		{
-			return Disposable.Empty;
-		});
-	}
+		=> Observable.Create<T>(o => Disposable.Empty);
 
 	public static IObservable<T> Throws<T>(Exception exception)
-	{
-		return Observable.Create<T>(o =>
+		=> Observable.Create<T>(o =>
 		{
 			o.OnError(exception);
 			return Disposable.Empty;
 		});
-	}
 
 
 	public static void DeferObservableExample()

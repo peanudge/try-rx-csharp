@@ -1,17 +1,11 @@
-﻿// Sequence Generaters
+﻿// Sequence Generator!
+// Observable.Create
+// Observable.Generate
 
-// QuiescentExample();
-// BackPressureExample();
-// SimpleFactoryMethodsEx();
-// DeferObservableExample();
+// Observable.Start
 
-// Sequence Generaters
 
-// ObservableRangeExample();
-
-// IntervalSequenceExample();
-// TimerSequenceExample(); 
-
-GenerateTimeSequenceExample();
-
+// StartAction();
+// ObservableFromTask();
+ObservableFromTaskPerSubscription();
 ReadLine();
