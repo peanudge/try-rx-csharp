@@ -47,11 +47,18 @@ public static class RxExt
 		TimeSpan minimumInactivityPeriod,
 		IScheduler scheduler)
 	{
-		IObservable<int> onoffs =
-			from _ in src
-			from delta in Observable.Return(1, scheduler)
-				.Concat(Observable.Return(-1, scheduler).Delay(minimumInactivityPeriod, scheduler))
-			select delta;
+
+
+		IObservable<int> onoffs = src.SelectMany(
+			_ => Observable
+				.Return(1, scheduler)
+				.Concat(
+					Observable
+						.Return(-1, scheduler)
+						.Delay(minimumInactivityPeriod, scheduler)
+				)
+			);
+
 
 		IObservable<int> outstanding = onoffs.Scan(0, (total, delta) => total + delta);
 		IObservable<int> zeroCrossings = outstanding.Where(total => total == 0);
